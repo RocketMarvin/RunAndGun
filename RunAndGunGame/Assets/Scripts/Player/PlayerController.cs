@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -25,7 +26,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         canMove = true;
-        movementSpeed *= Time.deltaTime;
+        //movementSpeed *= Time.deltaTime;
     }
 
     // Update is called once per frame
@@ -78,13 +79,16 @@ public class PlayerController : MonoBehaviour
         {
             //death animation en lose scene
             canMove = false;
+            Debug.Log("Dead");
+            Environment.Exit(0);
         }
     }
 
     private void ShootingLogic()
     {
-        RaycastHit hitInfo;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //RaycastHit hitInfo;
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
         
     }
 
