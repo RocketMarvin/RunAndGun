@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,8 +16,10 @@ public class PlayerController : MonoBehaviour
     public GameObject Player;
     public Transform Camera;
     public Rigidbody2D playerRigidbody;
+    public CircleCollider2D groundCheckCollider;
 
-    public bool canMove = true;
+    public static bool canMove = true;
+    private bool isGrounded = false;
 
     // Start is called before the first frame update
     void Start()
@@ -27,30 +31,63 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Camera.position = new Vector3(Player.transform.position.x, Camera.position.y, -10);
-
-        horizontalMovement = Input.GetAxisRaw("Horizontal");
-        if (horizontalMovement > 0)
+        if (canMove)
         {
-            gameObject.transform.Translate(movementSpeed, 0, 0);
-            Player.transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-        else if (horizontalMovement < 0)
-        {
-            gameObject.transform.Translate(-movementSpeed, 0, 0);
-            Player.transform.rotation = Quaternion.Euler(0, 180, 0);
-        }
+            Camera.position = new Vector3(Player.transform.position.x, Camera.position.y, -10);
 
-        Jump();
+            horizontalMovement = Input.GetAxisRaw("Horizontal");
+            if (horizontalMovement > 0)
+            {
+                gameObject.transform.Translate(movementSpeed, 0, 0);
+                Player.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            else if (horizontalMovement < 0)
+            {
+                gameObject.transform.Translate(movementSpeed, 0, 0);
+                Player.transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+
+            Jump();
+        }
     }
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+        }
+    }
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             playerRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
     }
 
+    private void Death()
+    {
+        if(health <= 0)
+        {
+            //death animation en lose scene
+            canMove = false;
+        }
+    }
+
+    private void ShootingLogic()
+    {
+        RaycastHit hitInfo;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        
+    }
+
     
+
 }
