@@ -10,12 +10,13 @@ public class PlayerController : MonoBehaviour
 {
     public float movementSpeed;
     public float jumpForce;
-    public float health;
+    public static float health;
+    public float damage;
 
     float horizontalMovement;
 
     public GameObject Player;
-    public Transform Camera;
+    public Transform transCamera, gunRotation;
     public Rigidbody2D playerRigidbody;
     public CircleCollider2D groundCheckCollider;
 
@@ -34,7 +35,7 @@ public class PlayerController : MonoBehaviour
     {
         if (canMove)
         {
-            Camera.position = new Vector3(Player.transform.position.x, Camera.position.y, -10);
+            transCamera.position = new Vector3(Player.transform.position.x, transCamera.position.y, -10);
 
             horizontalMovement = Input.GetAxisRaw("Horizontal");
             if (horizontalMovement > 0)
@@ -48,6 +49,8 @@ public class PlayerController : MonoBehaviour
                 Player.transform.rotation = Quaternion.Euler(0, 180, 0);
             }
 
+
+            ShootingLogic();
             Jump();
         }
     }
@@ -86,12 +89,39 @@ public class PlayerController : MonoBehaviour
 
     private void ShootingLogic()
     {
-        //RaycastHit hitInfo;
-        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        
+        Vector2 direction = (mousePosition - gunRotation.position).normalized;
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        gunRotation.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
+        if (angle > 90 || angle < -90)
+        {
+            gunRotation.localScale = new Vector3(1, -1, 1);
+        }
+        else
+        {
+            gunRotation.localScale = new Vector3(1, 1, 1);
+        }
+
+        RaycastHit hitInfo;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hitInfo))
+        {
+            if (hitInfo.collider.CompareTag("Enemy"))
+            {
+                EnemyAi enemyAi = hitInfo.transform.GetComponent<EnemyAi>();
+                enemyAi.HP -= damage;
+
+                //Instantiate(enemyImpactEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+            }
+            //else Instantiate(groundImpactEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+        }
     }
 
-    
+
+
 
 }
