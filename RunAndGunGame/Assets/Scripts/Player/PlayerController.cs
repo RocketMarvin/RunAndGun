@@ -10,12 +10,13 @@ public class PlayerController : MonoBehaviour
 {
     public float movementSpeed;
     public float jumpForce;
-    public static float health;
+    public float health;
+    public static float staticHealth;
     public float damage;
 
     float horizontalMovement;
 
-    public GameObject Player;
+    public GameObject Player, firePoint, bullet;
     public Transform transCamera, gunRotation;
     public Rigidbody2D playerRigidbody;
     public CircleCollider2D groundCheckCollider;
@@ -33,6 +34,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        staticHealth = health;
+        health = staticHealth;
         if (canMove)
         {
             transCamera.position = new Vector3(Player.transform.position.x, transCamera.position.y, -10);
@@ -83,7 +86,6 @@ public class PlayerController : MonoBehaviour
             //death animation en lose scene
             canMove = false;
             Debug.Log("Dead");
-            Environment.Exit(0);
         }
     }
 
@@ -106,18 +108,18 @@ public class PlayerController : MonoBehaviour
             gunRotation.localScale = new Vector3(1, 1, 1);
         }
 
-        RaycastHit hitInfo;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hitInfo))
+        RaycastHit2D hit = Physics2D.Raycast(firePoint.transform.position, firePoint.transform.right);
+        //Ray2D ray = ;//Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (hit.collider != null && Input.GetMouseButtonDown(0))
         {
-            if (hitInfo.collider.CompareTag("Enemy"))
+            Instantiate(bullet, firePoint.transform.position, firePoint.transform.rotation);
+            Debug.Log(hit.collider.name);
+            if (hit.collider.CompareTag("Enemy"))
             {
-                EnemyAi enemyAi = hitInfo.transform.GetComponent<EnemyAi>();
+                EnemyAi enemyAi = hit.transform.GetComponent<EnemyAi>();
                 enemyAi.HP -= damage;
-
-                //Instantiate(enemyImpactEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                   
             }
-            //else Instantiate(groundImpactEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
         }
     }
 
