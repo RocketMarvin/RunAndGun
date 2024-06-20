@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class EnemyAi : MonoBehaviour
 {
-    public float HP = 100, attackDamage = 5, shootingDamage = 20, attackRange = 3, attackTimer = 3, speed = 4;
+    public float HP = 100, attackDamage = 5, attackRange = 3, attackTimer = 3, speed = 4;
     private float distance, attackTimer_Script = 3;
 
     public GameObject Player;
     private Animator animator;
-    public CapsuleCollider2D idleCollider, idleColliderRun;
+    public CapsuleCollider2D idleCollider, runCollider;
 
     private bool isDead = false, chasePlayer = false;
 
@@ -23,9 +23,11 @@ public class EnemyAi : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        distance = Vector3.Distance(transform.position, Player.transform.position);
         HealthBehaviour();
         DealDamage();
-        if (chasePlayer) ChaseBehaviour();
+        if (chasePlayer && distance > attackRange) ChaseBehaviour();
+        else if (chasePlayer && distance <= attackRange) AttackBehaviour();
     }
 
     private void HealthBehaviour()
@@ -62,16 +64,21 @@ public class EnemyAi : MonoBehaviour
         }
     }
 
+    private void AttackBehaviour()
+    {
+        chasePlayer = false;
+    }
+
     private void DealDamage()
     {
-        distance = Vector3.Distance(transform.position, Player.transform.position);
 
-        if (distance < attackRange)
+
+        if (distance <= attackRange)
         {
             attackTimer_Script -= Time.deltaTime;
             if (attackTimer_Script <= 0)
             {
-                PlayerController.staticHealth -= attackDamage;
+                FindObjectOfType<PlayerController>().health -= attackDamage;
                 attackTimer_Script = attackTimer;
             }
         }
@@ -84,7 +91,7 @@ public class EnemyAi : MonoBehaviour
             chasePlayer = true;
             PlayAnim("Enemy1 Run");
             idleCollider.enabled = false;
-            idleColliderRun.enabled = true;
+            runCollider.enabled = true;
         }
     }
 
@@ -95,7 +102,7 @@ public class EnemyAi : MonoBehaviour
             chasePlayer = false;
             PlayAnim("Enemy1 Idle");
             idleCollider.enabled = true;
-            idleColliderRun.enabled = false;
+            runCollider.enabled = false;
         }
     }
 

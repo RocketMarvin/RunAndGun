@@ -8,11 +8,7 @@ using UnityEngine.Animations;
 
 public class PlayerController : MonoBehaviour
 {
-    public float movementSpeed;
-    public float jumpForce;
-    public float health;
-    public static float staticHealth;
-    public float damage;
+    public float movementSpeed, jumpForce, health, damage;
 
     float horizontalMovement;
 
@@ -28,14 +24,12 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         canMove = true;
-        //movementSpeed *= Time.deltaTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        staticHealth = health;
-        health = staticHealth;
+        
         if (canMove)
         {
             transCamera.position = new Vector3(Player.transform.position.x, transCamera.position.y, -10);
@@ -56,6 +50,8 @@ public class PlayerController : MonoBehaviour
             ShootingLogic();
             Jump();
         }
+
+        if (health <= 0) Death();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -108,18 +104,10 @@ public class PlayerController : MonoBehaviour
             gunRotation.localScale = new Vector3(1, 1, 1);
         }
 
-        RaycastHit2D hit = Physics2D.Raycast(firePoint.transform.position, firePoint.transform.right);
-        //Ray2D ray = ;//Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (hit.collider != null && Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            Instantiate(bullet, firePoint.transform.position, firePoint.transform.rotation);
-            Debug.Log(hit.collider.name);
-            if (hit.collider.CompareTag("Enemy"))
-            {
-                EnemyAi enemyAi = hit.transform.GetComponent<EnemyAi>();
-                enemyAi.HP -= damage;
-                   
-            }
+            GameObject bulletObj = Instantiate(bullet, firePoint.transform.position, firePoint.transform.rotation);
+            bulletObj.GetComponent<Bullet>().damage = damage;
         }
     }
 
