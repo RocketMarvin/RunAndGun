@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    private Vector2 direction;
     public float speed, ttl, damage;
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,11 @@ public class Bullet : MonoBehaviour
             raiderAi.HP -= damage;
             Destroy(gameObject);
         }
+    }
 
+    public void SetDirection(Vector2 newDirection)
+    {
+        direction = newDirection;
     }
 
 }

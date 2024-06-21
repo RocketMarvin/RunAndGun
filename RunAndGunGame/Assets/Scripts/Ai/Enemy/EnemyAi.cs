@@ -4,37 +4,36 @@ using UnityEngine;
 
 public class EnemyAi : MonoBehaviour
 {
-    public float HP = 100, attackDamage = 5, attackRange = 3, attackTimer = 3, speed = 4;
+    public float HP, attackDamage, attackRange, attackTimer, speed;
     private float distance, attackTimer_Script = 3;
 
     public GameObject Player;
     private Animator animator;
     public CapsuleCollider2D idleCollider, runCollider;
 
-    private bool isDead = false, chasePlayer = false;
+    public bool isDead = false, chasePlayer = false;
 
     // Start is called before the first frame update
     void Start()
     {
         chasePlayer = false;
         animator = GetComponent<Animator>();
+        Player = GameObject.FindWithTag("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
-        distance = Vector3.Distance(transform.position, Player.transform.position);
+        distance = Vector3.Distance(Player.transform.position, transform.position);
         HealthBehaviour();
-        DealDamage();
         if (chasePlayer && distance > attackRange) ChaseBehaviour();
-        else if (chasePlayer && distance <= attackRange) AttackBehaviour();
+        if (chasePlayer && distance <= attackRange) AttackBehaviour();
     }
 
     private void HealthBehaviour()
     {
         if (HP <= 0)
         {
-
             Destroy(gameObject);
             isDead = true;
         }
@@ -66,13 +65,6 @@ public class EnemyAi : MonoBehaviour
 
     private void AttackBehaviour()
     {
-        chasePlayer = false;
-    }
-
-    private void DealDamage()
-    {
-
-
         if (distance <= attackRange)
         {
             attackTimer_Script -= Time.deltaTime;
@@ -82,9 +74,24 @@ public class EnemyAi : MonoBehaviour
                 attackTimer_Script = attackTimer;
             }
         }
+        else
+        {
+            chasePlayer = true;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && !isDead)
+        {
+            chasePlayer = true;
+            PlayAnim("Enemy1 Run");
+            idleCollider.enabled = false;
+            runCollider.enabled = true;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && !isDead)
         {
@@ -105,6 +112,7 @@ public class EnemyAi : MonoBehaviour
             runCollider.enabled = false;
         }
     }
+
 
     void PlayAnim(string animName)
     {
