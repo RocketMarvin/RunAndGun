@@ -252,7 +252,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 393392878}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.03, y: 0.24, z: 0}
+  m_LocalPosition: {x: 1.36, y: 0.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -420,6 +420,7 @@ MonoBehaviour:
   Player: {fileID: 2060374991}
   firepoint: {fileID: 393392878}
   bullet: {fileID: 7211620694128387406, guid: 6f4cc27d46ca6de489b6aff38f7935b4, type: 3}
+  inRange: 0
 --- !u!50 &449976930
 Rigidbody2D:
   serializedVersion: 4

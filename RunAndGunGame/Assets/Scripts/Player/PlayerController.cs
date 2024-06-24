@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     public CircleCollider2D groundCheckCollider;
 
     public static bool canMove = true;
-    private bool isGrounded = false;
+    private bool isGrounded = false, moving = false;
 
     // Start is called before the first frame update
     void Start()
@@ -37,17 +37,20 @@ public class PlayerController : MonoBehaviour
             horizontalMovement = Input.GetAxisRaw("Horizontal");
             if (horizontalMovement > 0)
             {
+                moving = true;
                 gameObject.transform.Translate(movementSpeed, 0, 0);
                 Player.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
             else if (horizontalMovement < 0)
             {
+                moving = true;
                 gameObject.transform.Translate(movementSpeed, 0, 0);
                 Player.transform.rotation = Quaternion.Euler(0, 180, 0);
             }
+            else moving = false;
 
 
-            ShootingLogic();
+            if (!moving) ShootingLogic();
             Jump();
         }
 
