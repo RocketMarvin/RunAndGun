@@ -5,7 +5,7 @@ using UnityEngine;
 public class RaiderAI : MonoBehaviour
 {
     public float HP = 50, shootingDamage = 20, attackRange = 20, attackTimer = 3, bulletSpeed = 4;
-    private float attackTimer_Script = 3;
+    private float distance, attackTimer_Script = 3;
 
     public GameObject Player, firepoint, bullet;
     private Animator animator;
@@ -33,8 +33,6 @@ public class RaiderAI : MonoBehaviour
             // Player is to the right, normal scale
             transform.localScale = new Vector3(-1, 1, 1); // Normal scale
         }
-
-        Shoot();
     }
     private void HealthBehaviour()
     {
@@ -46,11 +44,7 @@ public class RaiderAI : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player")) inRange = true;
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player")) inRange = false;
+        if (collision.gameObject.CompareTag("Player")) Shoot();
     }
 
     private void Shoot()
@@ -62,18 +56,14 @@ public class RaiderAI : MonoBehaviour
             Vector2 firepointPos = firepoint.transform.position;
             Vector2 direction = (playerPos - firepointPos).normalized;
 
-            attackTimer_Script -= Time.deltaTime;
-
             if (attackTimer_Script <= 0)
             {
                 // Instantieer de kogel
                 GameObject bulletInstance = Instantiate(bullet, firepointPos, Quaternion.identity);
                 // Stel de richting van de kogel in
-                bulletInstance.GetComponent<RaiderBullet>().SetDirection(direction, bulletSpeed);
-
-                attackTimer_Script = attackTimer;
+                bulletInstance.GetComponent<Bullet>().SetDirection(direction);
             }
         }
-
+        
     }
 }
