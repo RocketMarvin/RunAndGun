@@ -33,6 +33,8 @@ public class RaiderAI : MonoBehaviour
             // Player is to the right, normal scale
             transform.localScale = new Vector3(-1, 1, 1); // Normal scale
         }
+
+        if (inRange) Shoot();
     }
     private void HealthBehaviour()
     {
@@ -44,7 +46,11 @@ public class RaiderAI : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player")) Shoot();
+        if (collision.gameObject.CompareTag("Player")) inRange = true;
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player")) inRange = false;
     }
 
     private void Shoot()
@@ -56,14 +62,18 @@ public class RaiderAI : MonoBehaviour
             Vector2 firepointPos = firepoint.transform.position;
             Vector2 direction = (playerPos - firepointPos).normalized;
 
+            attackTimer_Script -= Time.deltaTime;
+
             if (attackTimer_Script <= 0)
             {
                 // Instantieer de kogel
                 GameObject bulletInstance = Instantiate(bullet, firepointPos, Quaternion.identity);
                 // Stel de richting van de kogel in
-                bulletInstance.GetComponent<Bullet>().SetDirection(direction);
+                bulletInstance.GetComponent<RaiderBullet>().SetDirection(direction, bulletSpeed);
+
+                attackTimer_Script = attackTimer;
             }
         }
-        
+
     }
 }

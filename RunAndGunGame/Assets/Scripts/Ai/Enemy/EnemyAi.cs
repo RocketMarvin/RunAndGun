@@ -7,11 +7,13 @@ public class EnemyAi : MonoBehaviour
     public float HP, attackDamage, attackRange, attackTimer, speed;
     private float distance, attackTimer_Script = 3;
 
+    public int enemyID;
+
     public GameObject Player;
     private Animator animator;
     public CapsuleCollider2D idleCollider, runCollider;
 
-    public bool isDead = false, chasePlayer = false;
+    public bool isDead = false, chasePlayer = false, attackingPlayer = false;
 
     // Start is called before the first frame update
     void Start()
@@ -61,6 +63,7 @@ public class EnemyAi : MonoBehaviour
             // Player is to the right, normal scale
             transform.localScale = new Vector3(-1, 1, 1); // Normal scale
         }
+        attackingPlayer = false;
     }
 
     private void AttackBehaviour()
@@ -68,6 +71,9 @@ public class EnemyAi : MonoBehaviour
         if (distance <= attackRange)
         {
             attackTimer_Script -= Time.deltaTime;
+            attackingPlayer = true;
+            idleCollider.enabled = true;
+            runCollider.enabled = false;
             if (attackTimer_Script <= 0)
             {
                 FindObjectOfType<PlayerController>().health -= attackDamage;
@@ -85,7 +91,10 @@ public class EnemyAi : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && !isDead)
         {
             chasePlayer = true;
-            PlayAnim("Enemy1 Run");
+            if (attackingPlayer && enemyID == 1) PlayAnim("Enemy1 Attack");
+            else if (enemyID == 1) PlayAnim("Enemy1 Run");
+            if (attackingPlayer && enemyID == 2) PlayAnim("Enemy2 Attack");
+            else if (enemyID == 2) PlayAnim("Enemy2 Walk");
             idleCollider.enabled = false;
             runCollider.enabled = true;
         }
@@ -96,7 +105,10 @@ public class EnemyAi : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && !isDead)
         {
             chasePlayer = true;
-            PlayAnim("Enemy1 Run");
+            if (attackingPlayer && enemyID == 1) PlayAnim("Enemy1 Attack");
+            else if (enemyID == 1) PlayAnim("Enemy1 Run");
+            if (attackingPlayer && enemyID == 2) PlayAnim("Enemy2 Attack");
+            else if (enemyID == 2) PlayAnim("Enemy2 Walk");
             idleCollider.enabled = false;
             runCollider.enabled = true;
         }
@@ -107,7 +119,8 @@ public class EnemyAi : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && !isDead)
         {
             chasePlayer = false;
-            PlayAnim("Enemy1 Idle");
+            if (enemyID == 1) PlayAnim("Enemy1 Idle");
+            if (enemyID == 2) PlayAnim("Enemy2 Idle");
             idleCollider.enabled = true;
             runCollider.enabled = false;
         }

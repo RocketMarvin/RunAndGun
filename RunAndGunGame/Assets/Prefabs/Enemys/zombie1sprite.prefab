@@ -180,11 +180,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3422dfdf564955741992712350f13b95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 100
-  attackDamage: 10
+  HP: 50
+  attackDamage: 5
   attackRange: 1.8
-  attackTimer: 3
+  attackTimer: 1
   speed: 2
+  enemyID: 1
   Player: {fileID: 0}
   idleCollider: {fileID: 6912692196506329498}
   runCollider: {fileID: 6912692196506329497}
@@ -205,12 +206,12 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &6912692196506329498
 CapsuleCollider2D:

@@ -12,13 +12,13 @@ public class PlayerController : MonoBehaviour
 
     float horizontalMovement;
 
-    public GameObject Player, firePoint, bullet;
+    public GameObject Player, bullet ,firePoint1, firePoint2, firePoint3;
     public Transform transCamera, gunRotation;
     public Rigidbody2D playerRigidbody;
     public CircleCollider2D groundCheckCollider;
 
     public static bool canMove = true;
-    private bool isGrounded = false;
+    private bool isGrounded = false, moving = false;
 
     // Start is called before the first frame update
     void Start()
@@ -37,17 +37,19 @@ public class PlayerController : MonoBehaviour
             horizontalMovement = Input.GetAxisRaw("Horizontal");
             if (horizontalMovement > 0)
             {
+                moving = true;
                 gameObject.transform.Translate(movementSpeed, 0, 0);
                 Player.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
             else if (horizontalMovement < 0)
             {
+                moving = true;
                 gameObject.transform.Translate(movementSpeed, 0, 0);
                 Player.transform.rotation = Quaternion.Euler(0, 180, 0);
             }
+            else moving = false;
 
-
-            ShootingLogic();
+            if (!moving) ShootingLogic();
             Jump();
         }
 
@@ -106,7 +108,9 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject bulletObj = Instantiate(bullet, firePoint.transform.position, firePoint.transform.rotation);
+            GameObject bulletObj = Instantiate(bullet, firePoint1.transform.position, firePoint1.transform.rotation);
+            bulletObj = Instantiate(bullet, firePoint2.transform.position, firePoint2.transform.rotation);
+            bulletObj = Instantiate(bullet, firePoint3.transform.position, firePoint3.transform.rotation);
             bulletObj.GetComponent<Bullet>().damage = damage;
         }
     }

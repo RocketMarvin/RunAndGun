@@ -6,11 +6,6 @@ public class Bullet : MonoBehaviour
 {
     private Vector2 direction;
     public float speed, ttl, damage;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -23,13 +18,13 @@ public class Bullet : MonoBehaviour
     {
         if (collision.collider.TryGetComponent(out EnemyAi enemyAi))
         {
-            enemyAi.HP -= damage;
             Destroy(gameObject);
+            enemyAi.HP -= damage;
         }
         if (collision.collider.TryGetComponent(out RaiderAI raiderAi))
         {
-            raiderAi.HP -= damage;
             Destroy(gameObject);
+            raiderAi.HP -= damage;
         }
     }
 

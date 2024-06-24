@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7952356600911828804}
   - component: {fileID: 6161225207730854241}
-  - component: {fileID: 3391549466281682521}
   - component: {fileID: 2413748537691502182}
+  - component: {fileID: -8452263358187309277}
   m_Layer: 0
   m_Name: Raider shot
   m_TagString: Untagged
@@ -86,21 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3391549466281682521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7211620694128387406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 868353db2a4c58843ac1610c7579679e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  ttl: 3
-  damage: 10
 --- !u!61 &2413748537691502182
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -127,3 +112,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.34755516, y: 0.13736057}
   m_EdgeRadius: 0
+--- !u!114 &-8452263358187309277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7211620694128387406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af23c35fcba734abc62e67a459cc42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  ttl: 3
+  damage: 10
