@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2286346538198965295}
   - component: {fileID: 7289808253973914391}
   - component: {fileID: 7729573612848001832}
+  - component: {fileID: 616896566346359231}
   m_Layer: 0
   m_Name: effect_shot
   m_TagString: Untagged
@@ -127,3 +128,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.34755516, y: 0.13736057}
   m_EdgeRadius: 0
+--- !u!50 &616896566346359231
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3328018763652079616}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4

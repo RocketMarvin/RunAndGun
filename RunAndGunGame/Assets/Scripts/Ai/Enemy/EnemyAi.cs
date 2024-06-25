@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyAi : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class EnemyAi : MonoBehaviour
     public GameObject Player;
     private Animator animator;
     public CapsuleCollider2D idleCollider, runCollider;
+    public Image barHP;
 
     public bool isDead = false, chasePlayer = false, attackingPlayer = false;
 
@@ -34,6 +36,7 @@ public class EnemyAi : MonoBehaviour
 
     private void HealthBehaviour()
     {
+        barHP.fillAmount = HP / 100;
         if (HP <= 0)
         {
             Destroy(gameObject);

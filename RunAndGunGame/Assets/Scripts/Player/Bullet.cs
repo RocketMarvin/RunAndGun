@@ -16,6 +16,7 @@ public class Bullet : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.collider.CompareTag("Ground")) Destroy(gameObject);
         if (collision.collider.TryGetComponent(out EnemyAi enemyAi))
         {
             Destroy(gameObject);

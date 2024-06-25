@@ -5,7 +5,7 @@ using UnityEngine;
 public class AnimationPlayer : MonoBehaviour
 {
     private Animator animator;
-    public GameObject gun;
+    public GameObject gun1, gun2;
 
     float movement;
 
@@ -21,14 +21,30 @@ public class AnimationPlayer : MonoBehaviour
             movement = Input.GetAxisRaw("Horizontal");
             if (movement == 0)
             {
-                gun.SetActive(true);
-                animator.SetBool("Running", false);
+                if (PlayerController.weaponID == 0)
+                {
+                    gun1.SetActive(true);
+                    gun2.SetActive(false);
+                }
+                else if (PlayerController.weaponID == 1)
+                {
+                    gun1.SetActive(false);
+                    gun2.SetActive(true);
+                }
                 PlayAnim("Player idle");
             }
             if (movement != 0)
             {
-                gun.SetActive(false);
-                animator.SetBool("Running", true);
+                if (PlayerController.weaponID == 0)
+                {
+                    gun1.SetActive(true);
+                    gun2.SetActive(false);
+                }
+                else if (PlayerController.weaponID == 1)
+                {
+                    gun1.SetActive(false);
+                    gun2.SetActive(true);
+                }
                 PlayAnim("Player Run");
             }
         }

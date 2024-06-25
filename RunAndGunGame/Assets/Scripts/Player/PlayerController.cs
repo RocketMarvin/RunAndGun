@@ -4,18 +4,22 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.UI;
 
 
 public class PlayerController : MonoBehaviour
 {
-    public float movementSpeed, jumpForce, health, damage;
-
+    public float jumpForce, health, damage, speed;
     float horizontalMovement;
 
-    public GameObject Player, bullet ,firePoint1, firePoint2, firePoint3;
+    public static int weaponID = 0;
+
+    public GameObject Player, bullet ,g1FirePoint1, g1FirePoint2, g1FirePoint3, gun1, gun2, g2FirePoint;
     public Transform transCamera, gunRotation;
     public Rigidbody2D playerRigidbody;
-    public CircleCollider2D groundCheckCollider;
+    public AudioSource gunShot;
+    public Image barHP;
+
 
     public static bool canMove = true;
     private bool isGrounded = false, moving = false;
@@ -23,16 +27,19 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        canMove = true;
+        canMove = false;
+        weaponID = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        barHP.fillAmount = health / 50;
         if (canMove)
         {
             transCamera.position = new Vector3(Player.transform.position.x, transCamera.position.y, -10);
+
+            float movementSpeed = speed * Time.deltaTime;
 
             horizontalMovement = Input.GetAxisRaw("Horizontal");
             if (horizontalMovement > 0)
@@ -51,30 +58,22 @@ public class PlayerController : MonoBehaviour
 
             if (!moving) ShootingLogic();
             Jump();
+            WeaponSwitch();
         }
 
         if (health <= 0) Death();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
+        if (collision.gameObject.CompareTag("Ground")) isGrounded = true;
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
-        }
+        if (collision.gameObject.CompareTag("Ground")) isGrounded = false;
     }
     private void Jump()
     {
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
-        {
-            playerRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        }
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space)) playerRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
     private void Death()
@@ -108,14 +107,40 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject bulletObj = Instantiate(bullet, firePoint1.transform.position, firePoint1.transform.rotation);
-            bulletObj = Instantiate(bullet, firePoint2.transform.position, firePoint2.transform.rotation);
-            bulletObj = Instantiate(bullet, firePoint3.transform.position, firePoint3.transform.rotation);
-            bulletObj.GetComponent<Bullet>().damage = damage;
+            gunShot.Play();
+            if (weaponID == 0)
+            {
+                GameObject bulletObj = Instantiate(bullet, g1FirePoint1.transform.position, g1FirePoint1.transform.rotation);
+                bulletObj = Instantiate(bullet, g1FirePoint2.transform.position, g1FirePoint2.transform.rotation);
+                bulletObj = Instantiate(bullet, g1FirePoint3.transform.position, g1FirePoint3.transform.rotation);
+                bulletObj.GetComponent<Bullet>().damage = damage;
+            }
+            else
+            {
+                GameObject bulletObj = Instantiate(bullet, g2FirePoint.transform.position, g2FirePoint.transform.rotation);
+                bulletObj.GetComponent<Bullet>().damage = damage;
+            }
         }
     }
 
-
+    public void WeaponSwitch()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (weaponID == 1)
+            {
+                gun1.SetActive(false);
+                gun2.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.Q)) weaponID = 0;
+            }
+            else
+            {
+                gun1.SetActive(true);
+                gun2.SetActive(false);
+                weaponID++;
+            }
+        }
+    }
 
 
 }

@@ -7,6 +7,10 @@ TagManager:
   - Ground
   - Void
   - Enemy
+  - Title
+  - StartButton
+  - checkPoint
+  - checkPoint2
   layers:
   - Default
   - TransparentFX

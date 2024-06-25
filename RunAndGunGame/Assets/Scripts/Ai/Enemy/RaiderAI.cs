@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RaiderAI : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class RaiderAI : MonoBehaviour
 
     public GameObject Player, firepoint, bullet;
     private Animator animator;
+    public AudioSource gunShot;
+    public Image barHP;
 
     public bool inRange = false;
 
@@ -38,6 +41,7 @@ public class RaiderAI : MonoBehaviour
     }
     private void HealthBehaviour()
     {
+        barHP.fillAmount = HP / 60;
         if (HP <= 0)
         {
             Destroy(gameObject);
@@ -66,6 +70,7 @@ public class RaiderAI : MonoBehaviour
 
             if (attackTimer_Script <= 0)
             {
+                gunShot.Play();
                 // Instantieer de kogel
                 GameObject bulletInstance = Instantiate(bullet, firepointPos, Quaternion.identity);
                 // Stel de richting van de kogel in

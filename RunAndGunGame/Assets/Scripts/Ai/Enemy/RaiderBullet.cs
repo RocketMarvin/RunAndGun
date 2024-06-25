@@ -19,5 +19,15 @@ public class RaiderBullet : Bullet
     {
         // Verplaats de kogel in de aangegeven richting
         transform.Translate(direction * speed * Time.deltaTime, Space.World);
+        ttl -= Time.deltaTime;
+        if (ttl < 0) Destroy(gameObject);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+            FindObjectOfType<PlayerController>().health -= damage;
+        }
     }
 }
