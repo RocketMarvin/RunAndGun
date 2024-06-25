@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        canMove = false;
         weaponID = 0;
     }
 
@@ -118,6 +117,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 GameObject bulletObj = Instantiate(bullet, g2FirePoint.transform.position, g2FirePoint.transform.rotation);
+                damage = 20;
                 bulletObj.GetComponent<Bullet>().damage = damage;
             }
         }

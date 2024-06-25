@@ -37,13 +37,13 @@ public class AnimationPlayer : MonoBehaviour
             {
                 if (PlayerController.weaponID == 0)
                 {
-                    gun1.SetActive(true);
+                    gun1.SetActive(false);
                     gun2.SetActive(false);
                 }
                 else if (PlayerController.weaponID == 1)
                 {
                     gun1.SetActive(false);
-                    gun2.SetActive(true);
+                    gun2.SetActive(false);
                 }
                 PlayAnim("Player Run");
             }

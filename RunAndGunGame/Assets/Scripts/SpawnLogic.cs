@@ -18,6 +18,12 @@ public class SpawnLogic : MonoBehaviour
     void Update()
     {
         if(!hasSpawned) SpawnBehaviour();
+
+        if(Input.GetKeyDown(KeyCode.RightControl))
+        {
+            PlayerPrefs.SetInt("checkPoint", 0);
+            player.transform.position = checkPoints[0].transform.position;
+        }
     }
 
     private void SpawnBehaviour()

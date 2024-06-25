@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class UIManager : MonoBehaviour
 {
     public GameObject Canvas, MainMenu, StartButton, Title, Options;
     public AudioSource menuMusic, inGameMusic;
-
+    public bool isInMenu = false;
     // Start is called before the first frame update
     void Start()
     {
-        LoadTitle();
-        LoadStart();
+        if (isInMenu) PlayerController.canMove = false;
+        else PlayerController.canMove = true;
     }
 
     public void LoadMainMenu()
@@ -38,4 +39,6 @@ public class UIManager : MonoBehaviour
         inGameMusic.Play();
     }
     public void Quit() => Application.Quit();
+
+    
 }
